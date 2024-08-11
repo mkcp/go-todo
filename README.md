@@ -1,5 +1,5 @@
 # go-todo
-Sometimes you gotta just program a todo app to remember how to do your job.
+Sometimes you gotta just make a todo app to remember how to write funny little programs.
 
-There's a fun little spinner animation in here with a state machine that I'm kind of happy with. Always wanted to make
-one of those tbh.
+There's a toy loading spinner in here with a state machine and animation frames that I'm fairly happy with. Always
+wanted to make something that writes in place in the CLI, and it was simpler than I expected it would be. Yippee!
