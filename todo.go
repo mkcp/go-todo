@@ -18,8 +18,8 @@ func NewEntry(args []string) Entry {
 type State bool
 
 var (
-	Pending = State(true)
-	Done    = State(false)
+	Pending = State(false)
+	Done    = State(true)
 )
 
 type Todo struct {
@@ -32,7 +32,7 @@ func NewTodo() (*Todo, error) {
 	}
 	// Ensure file exists
 	if _, err := os.Stat(LOCATION); os.IsNotExist(err) {
-		_, err2 := os.Create(LOCATION)
+		err2 := os.WriteFile(LOCATION, []byte("{}"), 0644)
 		if err2 != nil {
 			return nil, err2
 		}
@@ -111,6 +111,7 @@ func serialize(m map[Entry]State) ([]byte, error) {
 	return payload, nil
 }
 
+// TODO Make reads async and display a spinner
 func (t *Todo) read() error {
 	// Load contents of file
 	bs, err2 := os.ReadFile(LOCATION)
@@ -129,6 +130,7 @@ func (t *Todo) read() error {
 	return nil
 }
 
+// TODO Make writes async and display a spinner
 func (t *Todo) write() error {
 	bs, err := serialize(t.m)
 	if err != nil {
@@ -146,5 +148,3 @@ func (t *Todo) write() error {
 	// Return nil
 	return nil
 }
-
-// TODO: Make these async out to goroutines, set a spinner while waiting, and return.

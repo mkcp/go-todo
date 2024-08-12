@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"time"
@@ -30,7 +31,11 @@ var (
 //	State  | Entry
 //	Done   | Create a TODO app
 func render(m map[Entry]State) {
-	fmt.Printf("%+v\n", m)
+	bs, err := json.MarshalIndent(m, "", "\t")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%+v\n", string(bs))
 }
 
 // runTestSpinner is a helper command for main that wraps the TestSpinner command logic
