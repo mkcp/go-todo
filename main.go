@@ -51,28 +51,60 @@ func runTestSpinner() {
 func main() {
 	DEBUG = os.Getenv("DEBUG")
 
-	t := NewTodo()
+	t, err := NewTodo()
+	if err != nil {
+		panic(err)
+	}
 	args := os.Args[1:]
 	entry := NewEntry(args[1:])
 
 	switch cmd := Command(args[0]); cmd {
 	case List:
-		t.List()
+		m, err := t.List()
+		if err != nil {
+			panic(err)
+		}
+		render(m)
 		return
 	case Add:
-		t.Add(entry)
-		render(t.List())
+		err := t.Add(entry)
+		if err != nil {
+			panic(err)
+		}
+		m, err2 := t.List()
+		if err2 != nil {
+			panic(err)
+		}
+		render(m)
 		return
 	case Complete:
-		t.Done(entry)
-		render(t.List())
+		err := t.Done(entry)
+		if err != nil {
+			panic(err)
+		}
+		m, err2 := t.List()
+		if err2 != nil {
+			panic(err)
+		}
+		render(m)
 		return
 	case Remove:
-		t.Remove(entry)
-		render(t.List())
+		err := t.Remove(entry)
+		if err != nil {
+			panic(err)
+		}
+		m, err2 := t.List()
+		if err2 != nil {
+			panic(err)
+		}
+		render(m)
 		return
 	case Clean:
-		// TODO: Removes all existing disk state
+		err := t.Cleanup()
+		if err != nil {
+			panic(err)
+		}
+		return
 	case TestSpinner:
 		runTestSpinner()
 		return
