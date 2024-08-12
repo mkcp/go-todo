@@ -112,27 +112,20 @@ func serialize(m map[Entry]State) ([]byte, error) {
 }
 
 func (t *Todo) read() error {
-	bs := make([]byte, 0)
-	m := make(map[Entry]State)
-
-	f, err := os.Open(LOCATION)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
 	// Load contents of file
-	_, err2 := f.Read(bs)
+	bs, err2 := os.ReadFile(LOCATION)
 	if err2 != nil {
 		return err2
 	}
+	if isDebug() {
+		fmt.Println("read().121 bytes=", string(bs))
+	}
 
 	// parse json into map[Entry]State
-	err3 := json.Unmarshal(bs, &m)
+	err3 := json.Unmarshal(bs, &t.m)
 	if err3 != nil {
-		// return err3
-		return nil // FIXME: Can we proceed here from empty file
+		return err3
 	}
-	t.m = m
 	return nil
 }
 
